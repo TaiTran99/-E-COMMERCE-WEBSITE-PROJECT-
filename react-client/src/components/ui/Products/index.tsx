@@ -10,7 +10,7 @@ type TProps = {
     id: string;
     limit?: number
 }
-const Products = ({title='', id='', limit= 4}: TProps) => {
+const Products = ({title='', id='', limit= 5}: TProps) => {
     const getProducts = async ()=>{
         const response = await axios.get(globalConfigs.urlAPI + `/v1/products/client/getall?cat_id=${id}&page=1&limit=${limit}`)
         console.log(getProducts,response);
@@ -27,7 +27,7 @@ const Products = ({title='', id='', limit= 4}: TProps) => {
             <h2 className="text-3xl">{title}</h2>
             <div className="mores">
                 <Link to={`/categories/${id}`}>Xem tất cả</Link>
-            </div>  
+            </div>
         </div>
         
         {

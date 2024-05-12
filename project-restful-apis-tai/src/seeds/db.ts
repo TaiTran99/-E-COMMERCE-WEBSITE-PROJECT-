@@ -1,4 +1,4 @@
-import { fakerVI as faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import mongoose from "mongoose";
 import Brand from '../models/brand.model'
 import Category from '../models/category.model'

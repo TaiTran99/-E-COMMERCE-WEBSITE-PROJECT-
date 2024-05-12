@@ -5,10 +5,10 @@ const HomePage = () => {
     <div>
       <section>banner</section>
       <section className="products-list my-5">
-        <Products title="Road" id='65faaaf2769cb640a51856c2' />
+        <Products title="Road" id='663c48ce037039fc3ad1e84d' />
       </section>
       <section className="products-list my-5">
-        <Products title="Cruiser" id='65faaaf2769cb640a51856c5' />
+        <Products title="Cruiser" id='663c48ce037039fc3ad1e850' />
       </section>
     </div>
   )

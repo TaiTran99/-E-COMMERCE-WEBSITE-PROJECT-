@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import Brand from '../models/brand.model';
 import { IBrand } from '../types/models';
+import { Query } from 'mongoose';
 //Tra lai ket qua
 const getAll = async (query: any)=>{
     //Phân trang
@@ -24,6 +25,7 @@ const getAll = async (query: any)=>{
     .sort(sortObject)
     .skip((currentPage - 1) * pageSize)
     .limit(pageSize)
+
 
     //Số phần tử khớp với điều kiện lọc được
     const filteredCount = brands.length;
