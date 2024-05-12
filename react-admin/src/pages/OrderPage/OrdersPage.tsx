@@ -11,6 +11,7 @@ import {
   InputNumber,
   message,
   Popconfirm,
+  Select
 } from "antd";
 import {
   DeleteOutlined,
@@ -19,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import type { TableProps, PaginationProps } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosClient } from "../library/axiosClient";
+import { axiosClient } from "../../library/axiosClient";
 import { useNavigate, useSearchParams } from "react-router-dom";
 interface DataType {
   _id?: string;
@@ -275,6 +276,7 @@ const OrdersPage = () => {
       key: "_id",
       render: (text) => <a>{text}</a>,
     },
+    // 
     {
       title: "Customer Name",
       dataIndex: "customer", // Cột này tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
@@ -384,7 +386,7 @@ const OrdersPage = () => {
             type="dashed"
             onClick={() => {
               console.log("Edit", record);
-              showModalEdit();
+              navigate(`/orders/${record._id}`)
               updateFormEdit.setFieldsValue(record);
             }}
           >
@@ -451,32 +453,27 @@ const OrdersPage = () => {
           onFinishFailed={onFinishEditFailed}
           autoComplete="off"
         >
-          <Form.Item<DataType>
+          {/* <Form.Item<DataType>
             label="Product Name"
             name = "productName"
-            initialValue={queryOrder.data?.data.data.orders[0].orderItems[2].product.productName} // Lấy giá trị productName từ orderItems
+            // initialValue={queryOrder.data?.data.data.orders[0].orderItems[2].product.productName} // Lấy giá trị productName từ orderItems
 
             rules={[
               { required: true, message: "Please input category Name!" },
               { min: 4, message: "Tối thiểu 4 kí tự" },
             ]}        
           >
-            {/* <div>
-              {queryOrder.data?.data.data.orders.map(order => (
-                order.orderItems.map(item => (
-                  <div key={item.product._id}>
-                    {item.product.productName}
-                  </div>
-                ))
-              ))}
-            </div> */}
+            
 
             <Input  />
-          </Form.Item>
+          </Form.Item> */}
+
+      
+            
 
           <Form.Item<DataType>
             label="Description"
-            name="description"
+            name="orderDate"
             rules={[{ max: 500, message: "Tối đa 500 kí tự" }]}
           >
             <Input />
@@ -504,7 +501,7 @@ const OrdersPage = () => {
             </Form.Item>
           </Form.Item>
 
-          <Form.Item hidden label="Id" name="_id">
+          <Form.Item label="Id" name="_id">
             <Input />
           </Form.Item>
         </Form>
