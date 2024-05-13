@@ -14,7 +14,7 @@ import StaffsPage from "./pages/StaffsPage";
 import OrdersPage from "./pages/OrderPage/OrdersPage";
 import ProductEditPage from "./pages/ProductPage/ProductEditPage";
 import ProductAddPage from "./pages/ProductPage/ProductAddPage";
-import OrderEditPage from "./pages/OrderPage/OrderEditPage";
+import OrderViewmorePage from "./pages/OrderPage/OrderEditPage";
 
 const queryClient = new QueryClient();
 
@@ -34,7 +34,7 @@ function App() {
               <Route path="/customers" element={<CustomerPage />} />
               <Route path="/staffs" element={<StaffsPage />} />
               <Route path="/orders" element={<OrdersPage />} />
-              <Route path="/orders/:id" element={<OrderEditPage />} />
+              <Route path="/orders/:id" element={<OrderViewmorePage />} />
             </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NoPage />} />

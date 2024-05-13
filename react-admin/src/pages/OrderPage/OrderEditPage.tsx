@@ -82,7 +82,7 @@ interface DataType {
     }
 }
 
-const OrderEditPage = () => {
+const OrderViewMorePage = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const showMessage = (text, level = "success") => {
@@ -271,14 +271,52 @@ const OrderEditPage = () => {
     //   },
     // },
    
+    // {
+    //   title: "Product Name",
+    //   dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+    //   key: "productName",
+    //   render: (orderItems) => {
+    //     // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
+    //     const productNames = orderItems.map((item) => item.product.productName);
+    //     return <span>{productNames.join(", ")}</span>; // Nối các tên sản phẩm lại với nhau, phân tách bằng dấu phẩy
+    //   },
+    // },
     {
       title: "Product Name",
       dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
       key: "productName",
       render: (orderItems) => {
         // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
-        const productNames = orderItems.map((item) => item.product.productName);
-        return <span>{productNames.join(", ")}</span>; // Nối các tên sản phẩm lại với nhau, phân tách bằng dấu phẩy
+        const productNames = orderItems.map((item, index) => (
+          <span key={index}>{item.product.productName}<br/></span>
+        ));
+        return productNames;
+      },
+    },
+    
+    {
+      title: "Quantity",
+      dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+      key: "quantity",
+      render: (orderItems) => {
+        // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
+        const quantity = orderItems.map((item, index) => (
+          <span key={index}>{item.quantity}<br/></span>
+        ));
+        return quantity;
+      },
+    },
+
+    {
+      title: "Price",
+      dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+      key: "price",
+      render: (orderItems) => {
+        // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
+        const price = orderItems.map((item, index) => (
+          <span key={index}>{item.price}<br/></span>
+        ));
+        return price;
       },
     },
     {
@@ -293,11 +331,12 @@ const OrderEditPage = () => {
       },
     },
     {
-      title: "Order Date",
-      dataIndex: "orderDate",
-      key: "orderDate",
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
       render: (text) => <a>{text}</a>,
     },
+  
     // {
     //   title: "Shipped Date",
     //   dataIndex: "shippedDate",
@@ -381,39 +420,7 @@ const OrderEditPage = () => {
     // },
 
 
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="dashed"
-            onClick={() => {
-              console.log("Edit", record);
-              showModalEdit();
-              updateFormEdit.setFieldsValue(record);
-            }}
-          >
-            View More
-          </Button>
-          <Popconfirm
-            title="Are you sure to delete?"
-            onConfirm={() => {
-              // DELETE
-              console.log("DELETE", record);
-              deleteMutation.mutate(record._id);
-            }}
-            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-            onCancel={() => {}}
-            okText="Đồng ý"
-            okType="danger"
-            cancelText="Đóng"
-          >
-            <Button danger type="dashed" icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </Space>
-      ),
-    },
+   
   ];
 
   return (
@@ -516,4 +523,4 @@ const OrderEditPage = () => {
   );
 };
 
-export default OrderEditPage;
+export default OrderViewMorePage;
