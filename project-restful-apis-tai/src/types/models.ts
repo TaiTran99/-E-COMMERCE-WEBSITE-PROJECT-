@@ -67,21 +67,35 @@ export interface IStaffMethods {
     comparePassword(n: string): boolean;
   }
 
+
+
 // Create a new Model type that knows about IUserMethods...
 export type StaffModel = Model<IStaff, {}, IStaffMethods>;
+
+// Create a new Model type that knows about IUserMethods...
+export type CustomerModel = Model<ICustomer, {}, ICustomerMethods>;
+
+
+
+
 export interface ICustomer extends BaseProperties{
+    _id?: string,
     firstName: string,
     lastName: string,
     email: string,
     phone: string,
-    password?: string,
+    password: string,
     isEmailVerified?: boolean,
     address: string,
     yard: string,
     district: string,
     province: string,
 }
-  
+
+// Put all user instance methods in this interface:
+export interface ICustomerMethods {
+    comparePassword(n: string): boolean;
+  }
   
 export interface IProduct extends BaseProperties {
     productName: string,

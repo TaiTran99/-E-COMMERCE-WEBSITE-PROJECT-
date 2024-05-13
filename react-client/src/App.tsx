@@ -17,6 +17,7 @@ import numeral from 'numeral'
 import 'numeral/locales/vi';
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
+import RegisterPage from "./pages/RegisterPage";
 
 const queryClient = new QueryClient();
 //định dạng tiền tệ theo kiểu việt nam
@@ -40,6 +41,7 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="*" element={<NoPage />} />
             </Route>
            

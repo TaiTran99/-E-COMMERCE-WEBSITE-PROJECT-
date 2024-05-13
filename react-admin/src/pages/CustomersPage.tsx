@@ -319,7 +319,7 @@ const CustomersPage = () => {
     <div>
     {contextHolder}
       <h1>Customers List</h1>
-      {/* <Button
+      <Button
         type="primary"
         onClick={() => {
           console.log("Them moi");
@@ -327,7 +327,7 @@ const CustomersPage = () => {
         }}
       >
         Create new Customer
-      </Button> */}
+      </Button>
       {/* TABLE LIST */}
       <Table
         pagination={false}
@@ -485,7 +485,7 @@ const CustomersPage = () => {
       {/* END MODAL EDIT */}
 
       {/* BEGIN MODAL Create */}
-      {/* <Modal
+      <Modal
         title="Create new Customer"
         open={isModalCreateOpen}
         onOk={handleOkCreate}
@@ -605,7 +605,7 @@ const CustomersPage = () => {
             </Form.Item>
           </Form.Item>
         </Form>
-      </Modal> */}
+      </Modal>
       {/* END MODAL Create */}
     </div>
   );

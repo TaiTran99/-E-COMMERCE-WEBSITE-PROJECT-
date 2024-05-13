@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { useCartStore } from "../../../hooks/useCartStore"
+import UserInfo from "../../UserInfo";
 const Header = () => {
   const {itemCount} = useCartStore();
     return (
@@ -12,15 +13,20 @@ const Header = () => {
                     <li>
                       <Link to={`/`}>Home</Link>
                     </li>
-                    <li>
-                    <Link to={`/login`}>Login</Link>
-                    </li>
+              
                     <li>
                     <Link to={`/customer`}>Customer</Link>
                     </li>
                     <li>
                     <Link to={`/cart`}><span>Cart <em className="w-[20px] h-[20px] text-center inline-block rounded-full bg-white text-indigo-900">{itemCount}</em></span></Link>
                     </li>
+                    <li>
+                    <UserInfo  />
+                    </li>
+                    <li>
+                    <Link to={`/register`}>Register</Link>
+                    </li>
+                    
                   </ul>
                 </nav>
             </div>

@@ -1,7 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { ICustomer } from '../types/models';
+import { ICustomer , CustomerModel, ICustomerMethods } from '../types/models';
+import bcrypt from 'bcrypt'
+const SALT_WORK_FACTOR = 10;
 
-const customerSchema = new Schema<ICustomer>(
+const customerSchema = new Schema<ICustomer,CustomerModel, ICustomerMethods>(
     {
       firstName: {
         type: String,
@@ -112,5 +114,34 @@ const customerSchema = new Schema<ICustomer>(
     }
 );
 
-const Customer = model<ICustomer>('Customer', customerSchema);
+//Đăng ký một phương thức để so sánh mật khẩu
+customerSchema.method('comparePassword', function comparePassword(candidatePassword: string) {
+  return bcrypt.compare(candidatePassword, this.password);
+});
+
+
+//Đăng ký middleware
+customerSchema.pre('save', function (next) {
+  var customer = this;
+
+  // only hash the password if it has been modified (or is new)
+  if (!customer.isModified('password')) return next();
+
+  /**
+   * Mã hóa mật khẩu mỗi ghi save, update
+   */
+  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+    if (err) return next(err);
+    // hash the password using our new salt
+    bcrypt.hash(customer.password, salt, function (err, hash) {
+      if (err) return next(err);
+      // override the cleartext password with the hashed one
+      customer.password = hash;
+      next();
+    });
+  });
+});
+
+
+const Customer = model<ICustomer, CustomerModel>('Customer', customerSchema);
 export default Customer;

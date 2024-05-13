@@ -1,8 +1,11 @@
+import LoginAPI from '../../components/LoginAPI'
 
-const LoginPage = () => {
+const Login = () => {
   return (
-    <div>LoginPage</div>
+    <div className='flex items-center content-center h-screen mb-20'>
+        <LoginAPI />
+    </div>
   )
 }
 
-export default LoginPage
+export default Login
