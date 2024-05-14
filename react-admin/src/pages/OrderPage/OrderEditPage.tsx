@@ -102,12 +102,12 @@ const OrderViewMorePage = () => {
   const int_limit = limit ? parseInt(limit) : 10;
   const onChangePagination: PaginationProps["onChange"] = (pageNumber) => {
     console.log("Page: ", pageNumber);
-    navigate(`/orders?page=${pageNumber}`);
+    navigate(`/orders/_id?page=${pageNumber}`);
   };
 
   //Lay danh sach danhmuc
   const getOrders = async (page = 1, limit = 10) => {
-    return axiosClient.get(`/v1/orders?page=${page}&limit=${limit}`);
+    return axiosClient.get(`/v1/orders/_id?page=${page}&limit=${limit}`);
   };
   //Lấy danh sách về
   // {data, isLoading, error, isError}
