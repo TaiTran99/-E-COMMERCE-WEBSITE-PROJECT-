@@ -294,30 +294,14 @@ const OrdersPage = () => {
       key: "orderDate",
       render: (text) => <a>{text}</a>,
     },
-    // {
-    //   title: "Shipped Date",
-    //   dataIndex: "shippedDate",
-    //   key: "shippedDate",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Paid Date",
-    //   dataIndex: "paidDate",
-    //   key: "paidDate",
-    //   render: (text) => <a>{text}</a>,
-    // },
+   
     {
       title: "Order Status",
       dataIndex: "orderStatus",
       key: "orderStatus",
       render: (text) => <a>{text}</a>,
     },
-    // {
-    //   title: "Order Note",
-    //   dataIndex: "orderNote",
-    //   key: "orderNote",
-    //   render: (text) => <a>{text}</a>,
-    // },
+  
 
     {
       title: "Customer Email",
@@ -342,40 +326,6 @@ const OrdersPage = () => {
         ) ;
       },
     },
-
-   
-    // {
-    //   title: "Shipping Yard",
-    //   dataIndex: "shippingYard",
-    //   key: "shippingYard",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Shipping District",
-    //   dataIndex: "shippingDistrict",
-    //   key: "shippingDistrict",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Shipping Province",
-    //   dataIndex: "shippingProvince",
-    //   key: "shippingProvince",
-    //   render: (text) => <a>{text}</a>,
-    // },
-  
-    // {
-    //   title: "Customer ID",
-    //   dataIndex: "customer",
-    //   key: "customer",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Staff ID",
-    //   dataIndex: "staff",
-    //   key: "staff",
-    //   render: (text) => <a>{text}</a>,
-    // },
-
 
     {
       title: "Action",
@@ -453,23 +403,7 @@ const OrdersPage = () => {
           onFinishFailed={onFinishEditFailed}
           autoComplete="off"
         >
-          {/* <Form.Item<DataType>
-            label="Product Name"
-            name = "productName"
-            // initialValue={queryOrder.data?.data.data.orders[0].orderItems[2].product.productName} // Lấy giá trị productName từ orderItems
-
-            rules={[
-              { required: true, message: "Please input category Name!" },
-              { min: 4, message: "Tối thiểu 4 kí tự" },
-            ]}        
-          >
-            
-
-            <Input  />
-          </Form.Item> */}
-
-      
-            
+             
 
           <Form.Item<DataType>
             label="Description"

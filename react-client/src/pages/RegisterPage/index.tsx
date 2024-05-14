@@ -39,9 +39,27 @@ const RegisterPage = () => {
   
     
     const queryClient = useQueryClient();
-    const fetchCreate = async (formData: DataType) => {
-        return axiosClient.post(`/v1/customers`, formData);
-      };
+    const checkEmailExists = async (email: string) => {
+      // Thực hiện yêu cầu kiểm tra email tồn tại
+      // Ví dụ: gửi yêu cầu đến máy chủ của bạn để kiểm tra email
+      // Trả về true nếu email đã tồn tại, ngược lại trả về false
+      // Ví dụ:
+      // const response = await axiosClient.get(`/check-email/${email}`);
+      // return response.data.exists;
+      return false; // Giả sử mã nguồn của bạn cần thay đổi để thực hiện kiểm tra này
+  };
+
+  const fetchCreate = async (formData: DataType) => {
+      const { email } = formData;
+      const emailExists = await checkEmailExists(email);
+      if (emailExists) {
+          throw new Error("Email already exists"); // Ném một lỗi nếu email đã tồn tại
+      }
+      // Nếu email không tồn tại, thực hiện API để tạo mới dữ liệu
+      return axiosClient.post(`/v1/customers`, formData);
+  };
+      // Hàm kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+     
     
       const mutationCreate = useMutation({
         mutationFn: fetchCreate,
@@ -58,14 +76,22 @@ const RegisterPage = () => {
           //
           updateFormEdit.resetFields();
         },
-        onError: () => {
-          //khi gọi API bị lỗi
-          messageApi.open({
-            type: "error",
-            content: "Create error !",
-          });
-        },
-      });
+        onError: (error) => {
+          // Kiểm tra xem lỗi có phải là "Email đã tồn tại" hay không
+          if (error instanceof Error && error.message === "Email already exists") {
+              messageApi.open({
+                  type: "error",
+                  content: "Email đã tồn tại",
+              });
+          } else {
+              // Nếu không phải lỗi "Email đã tồn tại", hiển thị thông báo lỗi khác
+              messageApi.open({
+                  type: "error",
+                  content: "Email đã tồn tại",
+              });
+          }
+      },
+  });
 
     
     const onFinish: FormProps<DataType>["onFinish"] = (values) => {
@@ -110,15 +136,36 @@ const RegisterPage = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item<DataType>
+          <Form.Item
             label="Email"
             name="email"
             rules={[
-              { max: 500, message: "Tối đa 500 kí tự" }
+              { 
+                required: true,
+                message: "Please input your email address!" 
+              },
+              { 
+                max: 500, 
+                message: "Maximum 500 characters allowed" 
+              },
+              {
+                type: "email",
+                message: "The input is not valid email!",
+              },
+              {
+                validator: (_, email) => {
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!emailRegex.test(email)) {
+                    return Promise.reject("Invalid email format!");
+                  }
+                  return Promise.resolve();
+                },
+              },
             ]}
           >
             <Input />
           </Form.Item>
+
           <Form.Item<DataType>
             label="Phone"
             name="phone"
@@ -164,15 +211,7 @@ const RegisterPage = () => {
           >
             <Input />
           </Form.Item>
-          {/* <Form.Item<DataType>
-            label="Password"
-            name="password"
-            rules={[
-              { max: 500, message: "Tối đa 500 kí tự" }
-            ]}
-          >
-            <Input />
-          </Form.Item> */}
+          
 
             <Form.Item
               label="Password"

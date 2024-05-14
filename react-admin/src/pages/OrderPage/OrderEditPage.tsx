@@ -78,7 +78,8 @@ interface DataType {
       quantity: number,
       price: number,
       discount: number,
-      _id:string
+      _id:string,
+      stock:string
     }
 }
 
@@ -258,29 +259,8 @@ const OrderViewMorePage = () => {
     //reset form
   };
 
-  const columns: TableProps<DataType>["columns"] = [
-    
-    // {
-    //   title: "Quantity",
-    //   dataIndex: "orderItems", // Cột này tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
-    //   key: "quantity",
-    //   render: (orderItems) => {
-    //     // Xác định cách hiển thị tên sản phẩm (ở đây tôi sử dụng dấu phẩy để nối các tên sản phẩm lại với nhau)
-    //     const quantity = orderItems.map((item) => item.quantity);
-    //     return <span>{quantity}</span>;
-    //   },
-    // },
-   
-    // {
-    //   title: "Product Name",
-    //   dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
-    //   key: "productName",
-    //   render: (orderItems) => {
-    //     // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
-    //     const productNames = orderItems.map((item) => item.product.productName);
-    //     return <span>{productNames.join(", ")}</span>; // Nối các tên sản phẩm lại với nhau, phân tách bằng dấu phẩy
-    //   },
-    // },
+  const columns: TableProps<DataType>["columns"] = [   
+
     {
       title: "Product Name",
       dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
@@ -331,39 +311,59 @@ const OrderViewMorePage = () => {
       },
     },
     {
-      title: "Total",
-      dataIndex: "total",
-      key: "total",
-      render: (text) => <a>{text}</a>,
+      title: "Storage",
+      dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+      key: "stock",
+      render: (orderItems) => {
+        // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
+        const stock = orderItems.map((item, index) => (
+          <span key={index}>{item.stock}<br/></span>
+        ));
+        return stock;
+      },
     },
-  
-    // {
-    //   title: "Shipped Date",
-    //   dataIndex: "shippedDate",
-    //   key: "shippedDate",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Paid Date",
-    //   dataIndex: "paidDate",
-    //   key: "paidDate",
-    //   render: (text) => <a>{text}</a>,
-    // },
+    {
+      title: "discount",
+      dataIndex: "orderItems", // Tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+      key: "discount",
+      render: (orderItems) => {
+        // Lặp qua từng sản phẩm trong danh sách sản phẩm của đơn hàng
+        const discount = orderItems.map((item, index) => (
+          <span key={index}>{item.discount}<br/></span>
+        ));
+        return discount;
+      },
+    },
+
+    {
+      title: "Total Money",
+      key: "total",
+      render: (_, record) => {
+        const { orderItems } = record;
+        if (!Array.isArray(orderItems)) {
+          return <span>Invalid order items</span>;
+        }
+    
+        let total = 0;
+    
+        orderItems.forEach((item) => {
+          const subTotal = item.price * item.quantity * (100 - item.discount) / 100;
+          total += subTotal;
+        });
+    
+        return <span>{total}</span>;
+      },
+    },
+
     {
       title: "Order Status",
       dataIndex: "orderStatus",
       key: "orderStatus",
       render: (text) => <a>{text}</a>,
     },
-    // {
-    //   title: "Order Note",
-    //   dataIndex: "orderNote",
-    //   key: "orderNote",
-    //   render: (text) => <a>{text}</a>,
-    // },
 
     {
-      title: "Customer Email",
+      title: "Customer Phone",
       dataIndex: "customer", // Cột này tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
       key: "phone",
       render: (customer) => {
@@ -385,41 +385,6 @@ const OrderViewMorePage = () => {
         ) ;
       },
     },
-
-   
-    // {
-    //   title: "Shipping Yard",
-    //   dataIndex: "shippingYard",
-    //   key: "shippingYard",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Shipping District",
-    //   dataIndex: "shippingDistrict",
-    //   key: "shippingDistrict",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Shipping Province",
-    //   dataIndex: "shippingProvince",
-    //   key: "shippingProvince",
-    //   render: (text) => <a>{text}</a>,
-    // },
-  
-    // {
-    //   title: "Customer ID",
-    //   dataIndex: "customer",
-    //   key: "customer",
-    //   render: (text) => <a>{text}</a>,
-    // },
-    // {
-    //   title: "Staff ID",
-    //   dataIndex: "staff",
-    //   key: "staff",
-    //   render: (text) => <a>{text}</a>,
-    // },
-
-
    
   ];
 
@@ -464,23 +429,6 @@ const OrderViewMorePage = () => {
           onFinishFailed={onFinishEditFailed}
           autoComplete="off"
         >
-          {/* <Form.Item<DataType>
-            label="Product Name"
-            name = "productName"
-            // initialValue={queryOrder.data?.data.data.orders[0].orderItems[2].product.productName} // Lấy giá trị productName từ orderItems
-
-            rules={[
-              { required: true, message: "Please input category Name!" },
-              { min: 4, message: "Tối thiểu 4 kí tự" },
-            ]}        
-          >
-            
-
-            <Input  />
-          </Form.Item> */}
-
-      
-            
 
           <Form.Item<DataType>
             label="Description"

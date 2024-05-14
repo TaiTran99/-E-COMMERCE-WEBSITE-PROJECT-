@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 import {
   Space,
   Table,
@@ -11,6 +12,7 @@ import {
   InputNumber,
   message,
   Popconfirm,
+
 } from "antd";
 import {
   DeleteOutlined,
@@ -45,6 +47,7 @@ const CustomersPage = () => {
       content: text,
     });
   };
+  
 
   const navigate = useNavigate();
   //=========================== PHÂN TRANG =================================//
@@ -151,6 +154,8 @@ const CustomersPage = () => {
       //msgError('Xóa Product không thành công !');
     },
   });
+
+
 
   //CRAETE
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -261,12 +266,12 @@ const CustomersPage = () => {
       key: "province",
       render: (text) => <a>{text}</a>,
     },
-    {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
-      render: (text) => <a>{text}</a>,
-    },
+    // {
+    //   title: "Password",
+    //   dataIndex: "password",
+    //   key: "password",
+    //   render: (text) => <a>{text}</a>,
+    // },
     {
       title: "Sort",
       dataIndex: "sort",
@@ -382,16 +387,42 @@ const CustomersPage = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item<DataType>
-            label="Email"
-            name="email"
-            rules={[
-              { required: true, message: "Please input customer Name!" },
-              { min: 4, message: "Tối thiểu 4 kí tự" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <Form.Item
+  label="Email"
+  name="email"
+  rules={[
+    { 
+      required: true,
+      message: "Please input your email address!" 
+    },
+    { 
+      max: 500, 
+      message: "Maximum 500 characters allowed" 
+    },
+    {
+      type: "email",
+      message: "The input is not valid email!",
+    },
+    {
+      validator: async (_, email) => {
+        if (!email) {
+          return Promise.resolve();
+        }
+        try {
+          const response = await axiosClient.get(`/check-email/${email}`);
+          if (response.data.exists) {
+            return Promise.reject("This email address is already in use!");
+          }
+        } catch (error) {
+          return Promise.reject("Failed to check email existence!");
+        }
+      },
+    },
+  ]}
+>
+  <Input />
+</Form.Item>
+
           <Form.Item<DataType>
             label="Phone"
             name="phone"
@@ -448,8 +479,15 @@ const CustomersPage = () => {
             label="Password"
             name="password"
             rules={[
-              { required: true, message: "Please input customer Name!" },
-              { min: 4, message: "Tối thiểu 4 kí tự" },
+              { 
+                validator: (rule, value, callback) => {
+                  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@!*%$#]).{8,}$/.test(value)) {
+                    callback("Mật khẩu phải gồm ít nhất 1 kí tự hoa, thường, đặc biệt");
+                  } else {
+                    callback();
+                  }
+                } 
+              }
             ]}
           >
             <Input />
@@ -519,15 +557,37 @@ const CustomersPage = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item<DataType>
+          <Form.Item
             label="Email"
             name="email"
             rules={[
-              { max: 500, message: "Tối đa 500 kí tự" }
+              { 
+                required: true,
+                message: "Please input your email address!" 
+              },
+              { 
+                max: 500, 
+                message: "Maximum 500 characters allowed" 
+              },
+              {
+                type: "email",
+                message: "The input is not valid email!",
+              },
+              {
+                validator: (_, email) => {
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!emailRegex.test(email)) {
+                    return Promise.reject("Invalid email format!");
+                  }
+                  return Promise.resolve();
+                },
+              },
             ]}
           >
             <Input />
           </Form.Item>
+
+
           <Form.Item<DataType>
             label="Phone"
             name="phone"
@@ -577,7 +637,15 @@ const CustomersPage = () => {
             label="Password"
             name="password"
             rules={[
-              { max: 500, message: "Tối đa 500 kí tự" }
+              { 
+                validator: (rule, value, callback) => {
+                  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@!*%$#]).{8,}$/.test(value)) {
+                    callback("Mật khẩu phải gồm ít nhất 1 kí tự hoa, thường, đặc biệt");
+                  } else {
+                    callback();
+                  }
+                } 
+              }
             ]}
           >
             <Input />

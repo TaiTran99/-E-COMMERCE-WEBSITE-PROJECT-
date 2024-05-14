@@ -496,27 +496,7 @@ const StaffsPage = () => {
           >
             <Input />
           </Form.Item>
-          {/* <Form.Item<DataType>
-            label="Role"
-            name="role"
-            >
-            <Select
-            style={{ width: 120 }}
-            onChange={()=>{
-            }}
-            options={
-                queryCategory.data &&
-                queryCategory.data.data.data.categories.map((c) => {
-                  return {
-                    value: c._id,
-                    label: c.categoryName,
-                  };
-                })
-            }
-            />
-          >
-            <Input />
-          </Form.Item> */}
+          
           <Form.Item<DataType>
             label="Role"
             name="role"

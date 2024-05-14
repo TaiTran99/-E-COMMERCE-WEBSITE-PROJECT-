@@ -124,6 +124,7 @@ export type TOrderItems = {
     discount: number;
     thumb?: string;
     name: string;
+    stock:string
 }
 
 export type TActionOrder = {
