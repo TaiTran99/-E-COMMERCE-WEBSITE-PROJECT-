@@ -1,7 +1,9 @@
 
 import {Form,Checkbox, Input,InputNumber, type FormProps,Button,message} from 'antd'
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient ,useQuery} from "@tanstack/react-query";
 import { axiosClient } from "../../library/axiosClient";
+import axios from 'axios';
+
 
 
 
@@ -34,74 +36,100 @@ const RegisterPage = () => {
 
     // },[user])
 
+    let existingEmails: string[] = [];
+    const getCustomers = async () => {
+      return axiosClient.get(`/v1/customers`)
+    };
+    //Lấy danh sách về
+    const queryCustomer = useQuery({
+        queryKey: ["categories"],
+        queryFn: getCustomers,
+    });
+
+    // Lấy danh sách khách hàng từ queryCustomer
+    
+    // Kiểm tra nếu dữ liệu khách hàng tồn tại
+    if (queryCustomer) {
+      // Tạo mảng để lưu trữ tất cả các địa chỉ email
+    
+
+      // Duyệt qua danh sách khách hàng và lấy ra các trường email
+      queryCustomer.data?.data.data.customers.forEach((customer) => {
+        existingEmails.push(customer.email);
+      });
+
+      // Kiểm tra mảng existingEmails để xem các địa chỉ email đã được lấy thành công
+      console.log(existingEmails);
+    } else {
+      console.log("Dữ liệu khách hàng không tồn tại.");
+    }
+
+
+
     
     const [updateFormEdit] = Form.useForm();
   
     
     const queryClient = useQueryClient();
     const checkEmailExists = async (email: string) => {
-      // Thực hiện yêu cầu kiểm tra email tồn tại
-      // Ví dụ: gửi yêu cầu đến máy chủ của bạn để kiểm tra email
-      // Trả về true nếu email đã tồn tại, ngược lại trả về false
-      // Ví dụ:
-      // const response = await axiosClient.get(`/check-email/${email}`);
-      // return response.data.exists;
-      return false; // Giả sử mã nguồn của bạn cần thay đổi để thực hiện kiểm tra này
-  };
+      // Giả sử bạn thực hiện kiểm tra email tồn tại ở phía máy chủ
+      // Trong ví dụ này, tôi sẽ chỉ đơn giản trả về một giá trị cố định là false
+      return false;
+    };
 
   const fetchCreate = async (formData: DataType) => {
       const { email } = formData;
-      const emailExists = await checkEmailExists(email);
+      const emailExists = existingEmails.includes(email);
       if (emailExists) {
-          throw new Error("Email already exists"); // Ném một lỗi nếu email đã tồn tại
+        throw new Error('Email already exists');
+      }
+  
+      // Kiểm tra xem email tồn tại trong cơ sở dữ liệu hay không
+      const emailExistsInDatabase = await checkEmailExists(email);
+  
+      if (emailExistsInDatabase) {
+        throw new Error('Email already exists in the database');
       }
       // Nếu email không tồn tại, thực hiện API để tạo mới dữ liệu
       return axiosClient.post(`/v1/customers`, formData);
   };
-      // Hàm kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
-     
-    
-      const mutationCreate = useMutation({
-        mutationFn: fetchCreate,
-        onSuccess: () => {
-          console.log("Create success !");
-          messageApi.open({
-            type: "success",
-            content: "Create success !",
-          });
-          // Làm tươi lại danh sách danh mục dựa trên key đã định nghĩa
-          queryClient.invalidateQueries({
-            queryKey: ["customers"],
-          });
-          //
-          updateFormEdit.resetFields();
-        },
-        onError: (error) => {
-          // Kiểm tra xem lỗi có phải là "Email đã tồn tại" hay không
-          if (error instanceof Error && error.message === "Email already exists") {
-              messageApi.open({
-                  type: "error",
-                  content: "Email đã tồn tại",
-              });
-          } else {
-              // Nếu không phải lỗi "Email đã tồn tại", hiển thị thông báo lỗi khác
-              messageApi.open({
-                  type: "error",
-                  content: "Email đã tồn tại",
-              });
-          }
-      },
+      
+  const mutationCreate = useMutation({
+    mutationFn: fetchCreate,
+    onSuccess: () => {
+      console.log('Create success !');
+      messageApi.open({
+        type: 'success',
+        content: 'Create success !',
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['customers'],
+      });
+      updateFormEdit.resetFields();
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        messageApi.open({
+          type: 'error',
+          content: error.message,
+        });
+      } else {
+        messageApi.open({
+          type: 'error',
+          content: 'Something went wrong',
+        });
+      }
+    },
   });
 
-    
-    const onFinish: FormProps<DataType>["onFinish"] = (values) => {
-        console.log('Success:', values);
-        mutationCreate.mutate(values)
-      };
-      
-      const onFinishFailed: FormProps<DataType>["onFinishFailed"] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-      };
+  const onFinish: FormProps<DataType>['onFinish'] = (values) => {
+    console.log('Success:', values);
+    mutationCreate.mutate(values);
+  };
+
+  const onFinishFailed: FormProps<DataType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <div>
         {contextHolder}

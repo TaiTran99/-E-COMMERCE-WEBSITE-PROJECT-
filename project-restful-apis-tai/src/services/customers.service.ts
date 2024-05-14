@@ -21,9 +21,9 @@ const getAll = async (query: any)=>{
     const customers = await Customer
     .find({})
     .select('-__v')
-    .sort(sortObject)
-    .skip((currentPage - 1) * pageSize)
-    .limit(pageSize)
+    // .sort(sortObject)
+    // .skip((currentPage - 1) * pageSize)
+    // .limit(pageSize)
 
     //Số phần tử khớp với điều kiện lọc được
     const filteredCount = customers.length;
