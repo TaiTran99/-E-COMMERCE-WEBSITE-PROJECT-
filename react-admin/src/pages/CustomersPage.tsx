@@ -388,40 +388,40 @@ const CustomersPage = () => {
             <Input />
           </Form.Item>
           <Form.Item
-  label="Email"
-  name="email"
-  rules={[
-    { 
-      required: true,
-      message: "Please input your email address!" 
-    },
-    { 
-      max: 500, 
-      message: "Maximum 500 characters allowed" 
-    },
-    {
-      type: "email",
-      message: "The input is not valid email!",
-    },
-    {
-      validator: async (_, email) => {
-        if (!email) {
-          return Promise.resolve();
-        }
-        try {
-          const response = await axiosClient.get(`/check-email/${email}`);
-          if (response.data.exists) {
-            return Promise.reject("This email address is already in use!");
-          }
-        } catch (error) {
-          return Promise.reject("Failed to check email existence!");
-        }
-      },
-    },
-  ]}
->
-  <Input />
-</Form.Item>
+            label="Email"
+            name="email"
+            rules={[
+              { 
+                required: true,
+                message: "Please input your email address!" 
+              },
+              { 
+                max: 500, 
+                message: "Maximum 500 characters allowed" 
+              },
+              {
+                type: "email",
+                message: "The input is not valid email!",
+              },
+              {
+                validator: async (_, email) => {
+                  if (!email) {
+                    return Promise.resolve();
+                  }
+                  try {
+                    const response = await axiosClient.get(`/check-email/${email}`);
+                    if (response.data.exists) {
+                      return Promise.reject("This email address is already in use!");
+                    }
+                  } catch (error) {
+                    return Promise.reject("Failed to check email existence!");
+                  }
+                },
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
           <Form.Item<DataType>
             label="Phone"

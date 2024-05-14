@@ -301,13 +301,12 @@ const OrderViewMorePage = () => {
     },
     {
       title: "Customer Name",
-      dataIndex: "customer", // Cột này tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+      dataIndex: "customer",
       key: "firstName",
       render: (customer) => {
-        // Xác định cách hiển thị tên sản phẩm (ở đây tôi sử dụng dấu phẩy để nối các tên sản phẩm lại với nhau)
-        const productNames = customer.firstName +" "+ customer.lastName;
-        return(<span>{productNames}</span>
-        ) ;
+        // Kiểm tra xem customer có tồn tại không trước khi truy cập vào firstName
+        const fullName = customer ? `${customer.firstName} ${customer.lastName}` : '';
+        return <span>{fullName}</span>;
       },
     },
     {
@@ -363,26 +362,23 @@ const OrderViewMorePage = () => {
     },
 
     {
-      title: "Customer Phone",
-      dataIndex: "customer", // Cột này tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
-      key: "phone",
-      render: (customer) => {
-        // Xác định cách hiển thị tên sản phẩm (ở đây tôi sử dụng dấu phẩy để nối các tên sản phẩm lại với nhau)
-        const productNames = customer.phone
-        return(<span>{productNames}</span>
-        ) ;
-      },
-    },
-    
-    {
       title: "Customer Email",
-      dataIndex: "customer", // Cột này tham chiếu đến danh sách sản phẩm trong mỗi đơn hàng
+      dataIndex: "customer",
       key: "email",
       render: (customer) => {
-        // Xác định cách hiển thị tên sản phẩm (ở đây tôi sử dụng dấu phẩy để nối các tên sản phẩm lại với nhau)
-        const productNames = customer.email
-        return(<span>{productNames}</span>
-        ) ;
+        // Kiểm tra xem customer có tồn tại không trước khi truy cập vào email
+        const email = customer ? customer.email : '';
+        return <span>{email}</span>;
+      },
+    },
+    {
+      title: "Customer Phone",
+      dataIndex: "customer",
+      key: "phone",
+      render: (customer) => {
+        // Kiểm tra xem customer có tồn tại không trước khi truy cập vào phone
+        const phone = customer ? customer.phone : '';
+        return <span>{phone}</span>;
       },
     },
    
