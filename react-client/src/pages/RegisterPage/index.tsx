@@ -37,6 +37,7 @@ const RegisterPage = () => {
     // },[user])
 
     let existingEmails: string[] = [];
+    let existingPhones: string[] = [];
     const getCustomers = async () => {
       return axiosClient.get(`/v1/customers`)
     };
@@ -56,10 +57,13 @@ const RegisterPage = () => {
       // Duyệt qua danh sách khách hàng và lấy ra các trường email
       queryCustomer.data?.data.data.customers.forEach((customer) => {
         existingEmails.push(customer.email);
+        existingPhones.push(customer.phone); // Thêm số điện thoại vào mảng existingPhones
       });
 
       // Kiểm tra mảng existingEmails để xem các địa chỉ email đã được lấy thành công
       console.log(existingEmails);
+      console.log(existingPhones);
+
     } else {
       console.log("Dữ liệu khách hàng không tồn tại.");
     }
@@ -76,20 +80,36 @@ const RegisterPage = () => {
       // Trong ví dụ này, tôi sẽ chỉ đơn giản trả về một giá trị cố định là false
       return false;
     };
+    const checkPhoneExists = async (phone: string) => {
+      // Thực hiện kiểm tra số điện thoại tồn tại ở phía máy chủ
+      // Giả sử mã nguồn của bạn thực hiện kiểm tra này
+      // Trong ví dụ này, tôi sẽ chỉ đơn giản trả về một giá trị cố định là false
+      return false;
+    };
 
   const fetchCreate = async (formData: DataType) => {
-      const { email } = formData;
+      const { email,phone } = formData;
       const emailExists = existingEmails.includes(email);
+      const phoneExists = existingPhones.includes(phone);
       if (emailExists) {
         throw new Error('Email already exists');
+      }
+
+      if (phoneExists) {
+        throw new Error('Phone number already exists');
       }
   
       // Kiểm tra xem email tồn tại trong cơ sở dữ liệu hay không
       const emailExistsInDatabase = await checkEmailExists(email);
+      const phoneExistsInDatabase = await checkPhoneExists(phone);
   
       if (emailExistsInDatabase) {
         throw new Error('Email already exists in the database');
       }
+      if (phoneExistsInDatabase) {
+        throw new Error('Phone number already exists in the database');
+      }
+  
       // Nếu email không tồn tại, thực hiện API để tạo mới dữ liệu
       return axiosClient.post(`/v1/customers`, formData);
   };
