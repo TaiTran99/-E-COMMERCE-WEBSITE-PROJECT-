@@ -10,15 +10,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../../library/axiosClient";
 import useAuth from '../../hooks/useAuth';
-
-interface DataType {
-  _id?: string;
-  productName: string;
-  category: string,
-  price: number;
-  sort: number;
-  isActive: boolean
-}
+import { DataType } from '../../models/product.model';
 
 
 const ProductPage = () => {

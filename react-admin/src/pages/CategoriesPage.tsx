@@ -21,14 +21,7 @@ import type { TableProps, PaginationProps } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../library/axiosClient";
 import { useNavigate, useSearchParams } from "react-router-dom";
-interface DataType {
-  _id?: string;
-  categoryName: string;
-  description: string;
-  slug: string;
-  sort: number;
-  isActive: boolean;
-}
+import { DataType } from "../models/category.model";
 
 const CategoriesPage = () => {
   const [messageApi, contextHolder] = message.useMessage();

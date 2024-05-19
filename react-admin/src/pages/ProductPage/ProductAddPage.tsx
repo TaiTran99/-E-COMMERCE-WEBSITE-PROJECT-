@@ -4,23 +4,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../../library/axiosClient";
 import { useNavigate } from "react-router-dom";
 import useAuth from '../../hooks/useAuth';
+import { DataType } from '../../models/product.model';
 
-interface DataType {
-    _id?: string;
-    productName: string;
-    category: string,
-    brandId: string,
-    price: number;
-    sort: number;
-    isActive: boolean,
-    description?: string,
-    discount: number,
-    stock: number,
-    modelYear: number,
-    thumbnail?: string,
-    slug: string,
-    isHome?: boolean
-  }
+
   
 const ProductAddPage = () => {
     const [messageApi, contextHolder] = message.useMessage();

@@ -3,23 +3,8 @@ import {Form,Checkbox, Input,InputNumber, type FormProps, Select,Button,message}
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../../library/axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
+import { DataType } from '../../models/product.model';
 
-interface DataType {
-    _id?: string;
-    productName: string;
-    category: string,
-    brandId: string,
-    price: number;
-    sort: number;
-    isActive: boolean,
-    description?: string,
-    discount: number,
-    stock: number,
-    modelYear: number,
-    thumbnail?: string,
-    slug: string,
-    isHome?: boolean
-  }
   
 const ProductEditPage = () => {
     const navigate = useNavigate();

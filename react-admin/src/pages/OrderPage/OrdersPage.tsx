@@ -22,65 +22,7 @@ import type { TableProps, PaginationProps } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../../library/axiosClient";
 import { useNavigate, useSearchParams } from "react-router-dom";
-interface DataType {
-  _id?: string;
-  orderDate: Date;
-  orderStatus: String;
-  requiredDate: Date;
-  shippedDate: Date;
-  paidDate: Date;
-  orderNote: string;
-  shippingAddress: string;
-  shippingYard: string;
-  shippingDistrict: string;
-  shippingProvince: string;
-  paymentType: string;
-  customer:
-    {
-      _id?: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-      phone: string;
-      address: string;
-      yard: string;
-      district: string;
-      province: string;
-      password: string;
-      sort: number;
-      isActive: boolean;
-    }
-  staff:
-    {
-      _id?: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-      phone: string;
-      address: string;
-      yard: string;
-      district: string;
-      province: string;
-      password: string;
-      sort: number;
-      isActive: boolean;
-    }
-  orderItems: 
-    {
-      product: {
-        _id?: string;
-        productName: string;
-        category: string,
-        price: number;
-        sort: number;
-        isActive: boolean
-      },
-      quantity: number,
-      price: number,
-      discount: number,
-      _id:string
-    }
-}
+import { DataType } from "../../models/order.model";
 
 const OrdersPage = () => {
   const [messageApi, contextHolder] = message.useMessage();

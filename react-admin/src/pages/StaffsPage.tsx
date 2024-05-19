@@ -22,20 +22,7 @@ import type { TableProps, PaginationProps } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "../library/axiosClient";
 import { useNavigate, useSearchParams } from "react-router-dom";
-interface DataType {
-  _id?: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  yard: string;
-  district: string;
-  province: string;
-  password: string;
-  sort: number;
-  isActive: boolean;
-}
+import { DataType } from "../models/staff.model";
 
 const StaffsPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
