@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, type FormProps, Input } from "antd";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 type FieldType = {
   email: string;

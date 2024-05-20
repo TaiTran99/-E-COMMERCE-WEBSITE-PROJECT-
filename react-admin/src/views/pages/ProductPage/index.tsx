@@ -8,9 +8,9 @@ import type { TableProps, PaginationProps } from "antd";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosClient } from "../../library/axiosClient";
-import useAuth from '../../hooks/useAuth';
-import { DataType } from '../../models/product.model';
+import { axiosClient } from "../../../library/axiosClient";
+import useAuth from '../../../hooks/useAuth';
+import { DataType } from '../../../models/product.model';
 
 
 const ProductPage = () => {

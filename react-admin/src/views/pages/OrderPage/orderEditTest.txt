@@ -20,9 +20,9 @@ import {
 } from "@ant-design/icons";
 import type { TableProps, PaginationProps } from "antd";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosClient } from "../../library/axiosClient";
+import { axiosClient } from "../../../library/axiosClient";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { DataType } from "../../models/order.model";
+import { DataType } from "../../../models/order.model";
 
 const OrderViewMorePage = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -43,12 +43,12 @@ const OrderViewMorePage = () => {
   const int_limit = limit ? parseInt(limit) : 10;
   const onChangePagination: PaginationProps["onChange"] = (pageNumber) => {
     console.log("Page: ", pageNumber);
-    navigate(`/orders/_id?page=${pageNumber}`);
+    navigate(`/orders/detail?page=${pageNumber}`);
   };
 
   //Lay danh sach danhmuc
   const getOrders = async (page = 1, limit = 10) => {
-    return axiosClient.get(`/v1/orders/_id?page=${page}&limit=${limit}`);
+    return axiosClient.get(`/v1/orders?page=${page}&limit=${limit}`);
   };
   //Lấy danh sách về
   // {data, isLoading, error, isError}
@@ -57,148 +57,6 @@ const OrderViewMorePage = () => {
     queryFn: () => getOrders(int_page, int_limit),
   });
 
-  //EDIT MODAL HANDLERs
-  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-
-  const [updateFormEdit] = Form.useForm();
-  const showModalEdit = () => {
-    setIsModalEditOpen(true);
-  };
-  //Khi click nut OK tren Modal Form Edit
-  const handleOkEdit = () => {
-    //setIsModalEditOpen(false);
-    // setIsModalEditOpen(false);
-    console.log("edit submit");
-    //Cho submit form trong Modal
-    updateFormEdit.submit();
-  };
-
-  const handleCancelEdit = () => {
-    setIsModalEditOpen(false);
-  };
-
-  //Goi API Edit Order
-  const queryClient = useQueryClient();
-
-  const fetchUpdate = async (formData: DataType) => {
-    const { _id, ...payload } = formData;
-    return axiosClient.put("/v1/orders/" + _id, payload);
-  };
-
-  const mutationUpdate = useMutation({
-    mutationFn: fetchUpdate,
-    onSuccess: () => {
-      console.log("Update success !");
-      messageApi.open({
-        type: "success",
-        content: "Update success !",
-      });
-      // Làm tươi lại danh sách danh mục dựa trên key đã định nghĩa
-      queryClient.invalidateQueries({
-        queryKey: ["orders", int_page, int_limit],
-      });
-      //Ẩn modal
-      setIsModalEditOpen(false);
-    },
-    onError: () => {
-      //khi gọi API bị lỗi
-    },
-  });
-
-  //hàm lấy thông tin từ form Edit
-  const onFinishEdit = async (values: any) => {
-    console.log("Success:", values); //=> chính là thông tin ở form edit
-    //Gọi API để update category
-    mutationUpdate.mutate(values);
-  };
-
-  const onFinishEditFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  //=========================== FETCH DELETE =================================//
-  // Mutations Để xóa danh mục
-  const fetchDelete = async (id: string) => {
-    return axiosClient.delete("/v1/orders/" + id);
-  };
-  const deleteMutation = useMutation({
-    mutationFn: fetchDelete,
-    onSuccess: () => {
-      console.log("Xóa category thành công !");
-      messageApi.open({
-        type: "success",
-        content: "Delete success !",
-      });
-      // Làm tươi lại danh sách danh mục dựa trên key đã định nghĩa
-      queryClient.invalidateQueries({
-        queryKey: ["orders", int_page, int_limit],
-      });
-    },
-    onError: (err) => {
-      console.log("Xóa có lỗi !", err);
-      //msgError('Xóa Product không thành công !');
-    },
-  });
-
-  //CRAETE
-  const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
-  const [updateFormCreate] = Form.useForm();
-  const showModalCreate = () => {
-    setIsModalCreateOpen(true);
-  };
-  //Khi click nut OK tren Modal Form Edit
-  const handleOkCreate = () => {
-    //setIsModalEditOpen(false);
-    // setIsModalEditOpen(false);
-    console.log("create submit");
-    //Cho submit form trong Modal
-    updateFormCreate.submit();
-  };
-
-  const handleCancelCreate = () => {
-    setIsModalCreateOpen(false);
-  };
-  const fetchCreate = async (formData: DataType) => {
-    return axiosClient.post("/v1/orders", formData);
-  };
-
-  const mutationCreate = useMutation({
-    mutationFn: fetchCreate,
-    onSuccess: () => {
-      console.log("Create success !");
-      messageApi.open({
-        type: "success",
-        content: "Create success !",
-      });
-      // Làm tươi lại danh sách danh mục dựa trên key đã định nghĩa
-      queryClient.invalidateQueries({
-        queryKey: ["orders", int_page, int_limit],
-      });
-      //Ẩn modal
-      setIsModalCreateOpen(false);
-      updateFormCreate.resetFields();
-    },
-    onError: (error: any) => {
-      //khi gọi API bị lỗi
-      console.log("error Create");
-      // messageApi.open({
-      //   type: "error",
-      //   content: error.response.data.message || "false",
-      // });
-      showMessage(error.response.data.message, "error");
-    },
-  });
-  //hàm lấy thông tin từ form Edit
-  const onFinishCreate = async (values: any) => {
-    console.log("Success:", values); //=> chính là thông tin ở form edit
-    //Gọi API để update category
-    mutationCreate.mutate(values);
-  };
-
-  const onFinishCreateFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-    //reset form
-  };
 
   const columns: TableProps<DataType>["columns"] = [   
 
@@ -347,62 +205,7 @@ const OrderViewMorePage = () => {
         />
       </div>
       {/* end TABLE LIST */}
-      {/* BEGIN MODAL EDIT */}
-      <Modal
-        title="Edit Order"
-        open={isModalEditOpen}
-        onOk={handleOkEdit}
-        onCancel={handleCancelEdit}
-        width={1300} 
-        
-      >
-        <Form
-          form={updateFormEdit}
-          name="edit-form"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinishEdit}
-          onFinishFailed={onFinishEditFailed}
-          autoComplete="off"
-        >
-
-          <Form.Item<DataType>
-            label="Description"
-            name="orderDate"
-            rules={[{ max: 500, message: "Tối đa 500 kí tự" }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item<DataType>
-            hasFeedback
-            label="Sort"
-            name="sort"
-            rules={[
-              { required: false, message: "Please sort" },
-              {
-                type: "number",
-                min: 1,
-                message: "Tối thiểu phải là 1",
-              },
-            ]}
-          >
-            <InputNumber min={0} defaultValue={50} />
-          </Form.Item>
-
-          <Form.Item>
-            <Form.Item name="isActive" valuePropName="checked" noStyle>
-              <Checkbox>Enable</Checkbox>
-            </Form.Item>
-          </Form.Item>
-
-          <Form.Item label="Id" name="_id">
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
-      {/* END MODAL EDIT */}
+   
 
     </div>
   );

@@ -1,18 +1,31 @@
-
+import React from 'react';
 import {Form,Checkbox, Input,InputNumber, type FormProps, Select,Button,message} from 'antd'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosClient } from "../../library/axiosClient";
-import { useNavigate, useParams } from "react-router-dom";
-import { DataType } from '../../models/product.model';
+import { axiosClient } from "../../../library/axiosClient";
+import { useNavigate } from "react-router-dom";
+import useAuth from '../../../hooks/useAuth';
+import { DataType } from '../../../models/product.model';
+
 
   
-const ProductEditPage = () => {
-    const navigate = useNavigate();
+const ProductAddPage = () => {
     const [messageApi, contextHolder] = message.useMessage();
+    //const {user} = useAuth()
+
+    // React.useEffect(()=>{
+    //   if(user?.role != 'user'){
+    //     messageApi.open({
+    //       type: "success",
+    //       content: "Ban khong co quyen Them moi",
+    //     });
+    //   }
+
+    // },[user])
+    
+    const navigate = useNavigate();
+    
     const [updateFormEdit] = Form.useForm();
-    const params = useParams();
-    console.log(params);
-    const {id} = params;
+   
 
     const getCategories = async () => {
         return axiosClient.get(`/v1/categories`)
@@ -32,47 +45,32 @@ const ProductEditPage = () => {
         queryFn: getBrands,
     });
     
-
-    const getProduct = async () => {
-        return axiosClient.get(`/v1/products/${id}`);
-    };
-    //Lấy danh sách về
-    // {data, isLoading, error, isError}
-    const queryProduct = useQuery({
-        queryKey: ["products-detail", id],
-        queryFn: getProduct
-    });
-    let productData = {};
-    if(queryProduct.isSuccess){
-        productData = queryProduct.data.data.data;
-        //productData.category = productData.category?._id;
-        console.log('productData',productData);
-    }
-    updateFormEdit.setFieldsValue(productData);
     
     const queryClient = useQueryClient();
-    const fetchUpdate = async (formData: DataType) => {
-        return axiosClient.put(`/v1/products/${id}`, formData);
+    const fetchCreate = async (formData: DataType) => {
+        return axiosClient.post(`/v1/products`, formData);
       };
     
-      const mutationUpdate = useMutation({
-        mutationFn: fetchUpdate,
+      const mutationCreate = useMutation({
+        mutationFn: fetchCreate,
         onSuccess: () => {
-          console.log("Update success !");
+          console.log("Create success !");
           messageApi.open({
             type: "success",
-            content: "Update success !",
+            content: "Create success !",
           });
           // Làm tươi lại danh sách danh mục dựa trên key đã định nghĩa
           queryClient.invalidateQueries({
-            queryKey: ["products-detail"],
+            queryKey: ["products"],
           });
+          //
+          updateFormEdit.resetFields();
         },
         onError: (error) => {
           //khi gọi API bị lỗi
           messageApi.open({
             type: "error",
-            content: "Update error !",
+            content: "Create error !",
           });
         },
       });
@@ -80,7 +78,7 @@ const ProductEditPage = () => {
     
     const onFinish: FormProps<DataType>["onFinish"] = (values) => {
         console.log('Success:', values);
-        mutationUpdate.mutate(values)
+        mutationCreate.mutate(values)
       };
       
       const onFinishFailed: FormProps<DataType>["onFinishFailed"] = (errorInfo) => {
@@ -89,7 +87,7 @@ const ProductEditPage = () => {
   return (
     <div>
         {contextHolder}
-        <h1>ProductEditPage</h1>
+        <h1>ProductAddPage</h1>
         <Button type='primary' onClick={()=>{
             navigate('/products')
         }}>Products List</Button>
@@ -243,18 +241,6 @@ const ProductEditPage = () => {
             <InputNumber min={0} defaultValue={50} />
           </Form.Item>
 
-          <Form.Item>
-            <Form.Item name="isHome" valuePropName="checked" noStyle>
-              <Checkbox>is Home</Checkbox>
-            </Form.Item>
-          </Form.Item>
-
-          <Form.Item>
-            <Form.Item name="isActive" valuePropName="checked" noStyle>
-              <Checkbox>Enable</Checkbox>
-            </Form.Item>
-          </Form.Item>
-
           <Form.Item<DataType>
             label="Thumbnail"
             name="thumbnail"
@@ -262,17 +248,20 @@ const ProductEditPage = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item hidden label="Id" name="_id">
-            <Input />
-          </Form.Item>
-
           <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
          
-
+          <Form.Item name="isHome" valuePropName="checked" >
+              <Checkbox>is Home</Checkbox>
+            </Form.Item>
+      
+         
+            <Form.Item name="isActive" valuePropName="checked">
+              <Checkbox checked={true} defaultChecked={true}>Enable</Checkbox>
+            </Form.Item>
           <Button 
           type="primary" 
           htmlType="submit"
-          loading={mutationUpdate.isPending}
+          loading={mutationCreate.isPending}
           >
             Submit
           </Button>
@@ -285,4 +274,4 @@ const ProductEditPage = () => {
   )
 }
 
-export default ProductEditPage
+export default ProductAddPage

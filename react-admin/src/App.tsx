@@ -2,19 +2,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./App.css";
-import DashboardPage from "./pages/DashboardPage";
-import LoginPage from "./pages/LoginPage";
-import NoPage from "./pages/NoPage";
+import DashboardPage from "./views/pages/DashboardPage";
+import LoginPage from "./views/pages/LoginPage";
+import NoPage from "./views/pages/NoPage";
 import LayoutAdmin from "./component/layouts/LayoutAdmin";
-import CategoriesPage from "./pages/CategoriesPage";
-import BrandsPage from "./pages/BrandsPage";
-import ProductsPage from "./pages/ProductPage";
-import CustomerPage from "./pages/CustomersPage";
-import StaffsPage from "./pages/StaffsPage";
-import OrdersPage from "./pages/OrderPage/OrdersPage";
-import ProductEditPage from "./pages/ProductPage/ProductEditPage";
-import ProductAddPage from "./pages/ProductPage/ProductAddPage";
-import OrderViewmorePage from "./pages/OrderPage/OrderEditPage";
+import CategoriesPage from "./views/pages/CategoriesPage";
+import BrandsPage from "./views/pages/BrandsPage";
+import ProductsPage from "./views/pages/ProductPage";
+import CustomerPage from "./views/pages/CustomersPage";
+import StaffsPage from "./views/pages/StaffsPage";
+import OrdersPage from "./views/pages/OrderPage/OrdersPage";
+import ProductEditPage from "./views/pages/ProductPage/ProductEditPage";
+import ProductAddPage from "./views/pages/ProductPage/ProductAddPage";
+import OrderViewmorePage from "./views/pages/OrderPage/OrderViewMorePage";
 
 const queryClient = new QueryClient();
 
