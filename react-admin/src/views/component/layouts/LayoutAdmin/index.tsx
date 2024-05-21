@@ -13,7 +13,7 @@ import { Layout, Menu, Button, theme } from "antd";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import UserInfo from "../../ui/UserInfo";
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "../../../../hooks/useAuth";
 
 const { Header, Sider, Content, Footer } = Layout;
 

@@ -5,7 +5,7 @@ import "./App.css";
 import DashboardPage from "./views/pages/DashboardPage";
 import LoginPage from "./views/pages/LoginPage";
 import NoPage from "./views/pages/NoPage";
-import LayoutAdmin from "./component/layouts/LayoutAdmin";
+import LayoutAdmin from "./views/component/layouts/LayoutAdmin";
 import CategoriesPage from "./views/pages/CategoriesPage";
 import BrandsPage from "./views/pages/BrandsPage";
 import ProductsPage from "./views/pages/ProductPage";

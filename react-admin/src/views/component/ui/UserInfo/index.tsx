@@ -1,4 +1,4 @@
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "../../../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { Avatar, Space } from "antd";
 import { UserOutlined } from "@ant-design/icons";
